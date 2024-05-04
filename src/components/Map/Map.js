@@ -58,31 +58,27 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
                 },
               }}
             >
-<Popup>
-  <Typography>{place.name}</Typography>
-  <Typography>
-  Cuisine: {place.cuisine.map(c => c.name).join(", ")}
-</Typography>
-<Typography>
-  Website: <a href={place.website} target="_blank">{place.website}</a>
-</Typography>
-
-
-
-  <div>
-    <img
-      className={classes.cardImage}
-      src={
-        place.photo
-          ? place.photo.images.large.url
-          : "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
-      }
-      alt={place.name}
-    />
-    <Rating readOnly size={"small"} value={Number(place.rating)} />
-  </div>
-</Popup>
-
+                  <Popup>
+                    <Typography>{place.name}</Typography>
+                    <Typography>
+                    Cuisine: {place.cuisine.length > 0 ? place.cuisine.map(c => c.name).join(", ") : "Not shown"}
+                    </Typography>
+                    <Typography>
+                      Open Now: {place.open_now_text === "Open Now" ? "Yes" : "No"}
+                    </Typography>
+                    <div>
+                      <img
+                        className={classes.cardImage}
+                        src={
+                          place.photo
+                            ? place.photo.images.large.url
+                            : "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
+                        }
+                        alt={place.name}
+                      />
+                      <Rating readOnly size={"small"} value={Number(place.rating)} />
+                    </div>
+                  </Popup>
             </Marker>
           ));
   }

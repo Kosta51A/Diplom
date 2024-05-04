@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Typography, Button, TextField } from "@material-ui/cor
 import CloseIcon from "@material-ui/icons/Close";
 import useStyles from "./styles";
 
-export default function MainHeader({ selected, openFavorites, AddNewFav, setSearchCoords,setCoords }) {
+export default function MainHeader({ selected, openFavorites, AddNewFav, setSearchedCoords,setCoords }) {
   const classes = useStyles();
   const [searchValue, setSearchValue] = useState("");
 
@@ -19,12 +19,16 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
 
   const handleSearch = async () => {
     try {
+      // Сначала устанавливаем searchedCoords в null
+      setSearchedCoords(null);
+  
       const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${searchValue}&format=json&limit=1`);
       const data = await response.json();
       if (data.length > 0) {
         const { lat, lon } = data[0];
         console.log("Found location:", lat, lon);
-        setSearchCoords({ lat, lng: lon }); // Устанавливаем новые координаты
+        // Затем устанавливаем новые координаты
+        setSearchedCoords({ lat, lng: lon });
       } else {
         console.log("Location not found");
       }
@@ -32,6 +36,7 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
       console.error("Error searching:", error);
     }
   };
+  
   
   
 
@@ -54,7 +59,7 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
             placeholder="Search for a location"
             variant="outlined"
             size="small"
-            value={searchValue}
+            value={searchValue || ""}
             onChange={handleSearchChange}
           />
           <Button className={classes.favoritesButton} onClick={handleSearch}>
