@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, Button, TextField } from "@material-ui/cor
 import CloseIcon from "@material-ui/icons/Close";
 import useStyles from "./styles";
 
+
 export default function MainHeader({ selected, openFavorites, AddNewFav, setSearchedCoords,setCoords }) {
   const classes = useStyles();
   const [searchValue, setSearchValue] = useState("");
@@ -48,8 +49,8 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
             Diplom work
           </Typography>
           {selected && (
-            <Typography variant="h8" className={classes.title}>
-              Selected place: {selected?.name}
+            <Typography variant="h6" className={classes.title}>
+              Selected place: {selected?.name}                      ////////////
             </Typography>
           )}
         </div>

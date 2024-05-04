@@ -10,9 +10,10 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { Typography } from "@material-ui/core";
+import { Typography,Box } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import useStyles from "./styles";
+import { DomEvent } from "leaflet";
 
 const LeafIcon = L.Icon.extend({
   options: {
@@ -54,33 +55,42 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
               icon={Icon}
               eventHandlers={{
                 click: (e) => {
+                  DomEvent.stopPropagation(e); // Остановка распространения события
                   setChildClicked(place);
                 },
               }}
             >
-                  <Popup>
-                    <Typography>{place.name}</Typography>
-                    <Typography>
-                    Cuisine: {place.cuisine.length > 0 ? place.cuisine.map(c => c.name).join(", ") : "Not shown"}
-                    </Typography>
-                    <Typography>
-                      Open Now: {place.open_now_text === "Open Now" ? "Yes" : "No"}
-                    </Typography>
-                    <div>
-                      <img
-                        className={classes.cardImage}
-                        src={
-                          place.photo
-                            ? place.photo.images.large.url
-                            : "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
-                        }
-                        alt={place.name}
-                      />
-                      <Rating readOnly size={"small"} value={Number(place.rating)} />
-                    </div>
-                  </Popup>
-            </Marker>
-          ));
+
+<Popup
+  className={classes.popup}
+  closeButton={false}
+  minWidth={240}
+  maxWidth={240}
+>
+  <Box className={classes.popupContent}>
+    <img
+      className={classes.cardImage}
+      src={place.photo ? place.photo.images.large.url : "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"}
+      alt={place.name}
+    />
+    <Box ml={2}>
+      <Typography variant="h6" style={{ fontWeight: "bold", marginBottom: 10 }}>
+        {place.name}
+      </Typography>
+      <Typography>
+        <span className={classes.highlightedText}>Cuisine:</span> {place.cuisine.length > 0 ? place.cuisine.map(c => c.name).join(", ") : "Not shown"}
+      </Typography>
+      <Typography>
+        <span className={classes.highlightedText}>Open Now:</span> {place.open_now_text === "Open Now" ? "Yes" : "No"}
+      </Typography>
+      <Typography>
+        <span className={classes.highlightedText}>Ranking:</span> {place.ranking}
+      </Typography>
+    </Box>
+  </Box>
+</Popup>
+      </Marker>
+    ));
   }
 
   useEffect(() => {

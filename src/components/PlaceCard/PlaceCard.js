@@ -1,4 +1,3 @@
-// PlaceCard.js
 import React from "react";
 import { Card, CardMedia, CardContent, Typography, Box, Link } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
@@ -49,6 +48,14 @@ const PlaceCard = ({ place, placeRef, selected }) => {
             {place.address}
           </Typography>
         )}
+
+        
+        {place.price_level && (
+          <Typography style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <RestaurantIcon />
+            Price Level: {place.price_level}
+          </Typography>
+        )}
         {place.phone && (
           <Typography
             style={{
@@ -64,22 +71,9 @@ const PlaceCard = ({ place, placeRef, selected }) => {
         {place.website && (
           <Typography style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <PublicIcon />
-            <Link href={place.website} target="_blank" rel="noopener noreferrer">
-              {place.website}
+            <Link href={place.website} target="_blank" rel="noopener noreferrer"  underline="none">
+              Website
             </Link>
-          </Typography>
-        )}
-        
-        {place.price_level && (
-          <Typography style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <RestaurantIcon />
-            Price Level: {place.price_level}
-          </Typography>
-        )}
-        {place.opening_hours && (
-          <Typography style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <RestaurantIcon />
-            Status: {place.opening_hours.open_now ? "Open" : "Closed"}
           </Typography>
         )}
       </CardContent>
