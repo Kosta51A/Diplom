@@ -1,10 +1,10 @@
 //PlaceCard.js
 import React from "react";
-import { Card, CardMedia, CardContent, Typography, Box } from "@material-ui/core";
+import { Card, CardMedia, CardContent, Typography, Box, Link } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import PhoneIcon from "@material-ui/icons/Phone";
-
+import PublicIcon from "@material-ui/icons/Public";
 const PlaceCard = ({ place, placeRef, selected }) => {
   React.useEffect(() => {
     if (selected) {
@@ -27,8 +27,6 @@ const PlaceCard = ({ place, placeRef, selected }) => {
     <Typography gutterBottom variant="h5">
       {place.name}
     </Typography>
-    {/* <Typography>Тип кухни: {place.combined_food}</Typography>
-    <Typography>Цены: {place.prices_restaurants}</Typography> */}
     <Box display="flex" justifyContent="space-between" my={2}>
       <Rating name="read-only" value={Number(place.rating)} readOnly />
       <Typography>
@@ -61,6 +59,14 @@ const PlaceCard = ({ place, placeRef, selected }) => {
         {place.phone}
       </Typography>
     )}
+            {place.website && (
+          <Typography style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <PublicIcon /> {/* Иконка сайта */}
+            <Link href={place.website} target="_blank" rel="noopener noreferrer">
+              {place.website}
+            </Link>
+          </Typography>
+        )}
   </CardContent>
 </Card>
 

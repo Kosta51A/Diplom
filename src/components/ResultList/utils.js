@@ -1,3 +1,4 @@
+//utils.js
 export const filterByRating = (places, selectedRating) => {
     return places.filter((place) =>
       !selectedRating ? true : Number(place.rating) >= selectedRating
