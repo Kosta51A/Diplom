@@ -1,17 +1,19 @@
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   title: {
     flexGrow: 1,
   },
-  favoritesButton: {
-    color: "white",
+  searchField: {
+    marginRight: theme.spacing(2),
   },
-  logo: {
-    maxWidth: 40, // Настройте размер логотипа по вашему желанию
+  searchButton: {
+    marginLeft: theme.spacing(2),
+  },
+  favoritesButton: {
+    marginLeft: theme.spacing(1),
+  },
+  searchIcon: {
     marginRight: theme.spacing(1),
   },
 }));
