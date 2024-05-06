@@ -6,7 +6,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     margin: 10,
-    minWidth: 120,
+    minWidth: 180,
     marginBottom: 30,
   },
   loading: {
@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   list: {
-    height: "75vh",
+    height: "80vh",
     overflow: "auto",
   },
 }));

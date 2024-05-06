@@ -1,5 +1,4 @@
-//ResultsList.js
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   FormControl,
   InputLabel,
@@ -7,6 +6,7 @@ import {
   MenuItem,
   CircularProgress,
   Grid,
+  Divider 
 } from "@material-ui/core";
 import PlaceCard from "../PlaceCard/PlaceCard";
 import { filterByRating, sortByReviewCount } from "./utils";
@@ -19,10 +19,10 @@ export default function ResultsList({
   childClicked,
   places,
 }) {
-  const [elRefs, setElRefs] = useState([]);
-  const [selectedRating, setSelectedRating] = useState(null);
-  const [sortByReviews, setSortByReviews] = useState(null);
+  const [selectedRating, setSelectedRating] = useState('');
+  const [sortByReviews, setSortByReviews] = useState('');
   const classes = useStyles();
+  const elRefs = useRef([]);
 
   const handleRatingChange = (event) => {
     setSelectedRating(event.target.value);
@@ -45,7 +45,7 @@ export default function ResultsList({
             <Select
               labelId="rating"
               id="rating-select"
-              value={selectedRating}
+              value={selectedRating || ''}
               onChange={handleRatingChange}
             >
               <MenuItem value={null}>All</MenuItem>
@@ -59,7 +59,7 @@ export default function ResultsList({
             <Select
               labelId="sort-by-reviews"
               id="sort-by-reviews-select"
-              value={sortByReviews}
+              value={sortByReviews || ''}
               onChange={handleSortByReviewsChange}
             >
               <MenuItem value={null}>None</MenuItem>
@@ -71,13 +71,13 @@ export default function ResultsList({
             {filterByRating(places, selectedRating)
               .sort((a, b) => sortByReviewCount(a, b, sortByReviews))
               .map((place, index) => (
-                <Grid ref={elRefs[index]} key={index} item xs={12}>
+                <Grid key={index} item xs={12}>
                   <PlaceCard
                     selected={Number(childClicked) === index}
-                    placeRef={elRefs[index]}
+                    placeRef={(element) => (elRefs.current[index] = element)}
                     place={place}
-                    key={index}
                   />
+                  {index < places.length - 1 && <Divider />}
                 </Grid>
               ))}
           </Grid>
