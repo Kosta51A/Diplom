@@ -1,4 +1,3 @@
-// App.js
 import React, { useEffect, useState } from "react";
 import { CssBaseline, Grid } from "@material-ui/core";
 import MainHeader from "./components/Header/Header";
@@ -6,10 +5,6 @@ import { getPlacesDetails } from "./API/API";
 import ResultsList from "./components/ResultList/ResultsList";
 import LLMap from "./components/Map/Map";
 import FavoritesList from "./components/Favorits/FavoritesList";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet-control-geocoder/dist/Control.Geocoder.css";
-import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 
 function App() {
   const [type, setType] = useState("restaurants");

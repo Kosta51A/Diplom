@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, Button, TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CloseIcon from "@material-ui/icons/Close";
 import useStyles from "./styles";
 
-
 export default function MainHeader({ selected, openFavorites, AddNewFav, setSearchedCoords }) {
   const classes = useStyles();
   const [options, setOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null); // Добавляем состояние для выбранного варианта
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   const handleAddToFavorites = () => {
     const { name, address } = selected;
@@ -36,20 +36,48 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
 
   const handleOptionSelect = (event, value) => {
     if (value) {
-      setSelectedOption(value); // Устанавливаем выбранный вариант
+      setSelectedOption(value);
     }
   };
 
   const handleSearch = () => {
     if (selectedOption) {
-      setSearchedCoords({ lat: selectedOption.lat, lng: selectedOption.lon });
+      setSearchLoading(true);
+      setSearchedCoords({ lat: parseFloat(selectedOption.lat), lng: parseFloat(selectedOption.lon) });
+      setSearchLoading(false);
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const getUserLocation = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setSearchedCoords({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  };
+
+  useEffect(() => {
+    getUserLocation();
+  }, []);
+    
   return (
     <AppBar position="static">
-      <Toolbar style={{ flex: 1, justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center" }}>
+      <Toolbar style={{ justifyContent: "space-between" }}>
+        <div className={classes.headerLeft}>
           <Typography variant="h6" className={classes.title}>
             Diplom work
           </Typography>
@@ -59,7 +87,7 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
             </Typography>
           )}
         </div>
-        <div>
+        <div className={classes.headerRight}>
           <Autocomplete
             className={classes.searchField}
             options={options}
@@ -72,11 +100,12 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
                 placeholder="Search for a location"
                 variant="outlined"
                 size="small"
+                onKeyPress={handleKeyPress}
               />
-            )}
+            )} 
           />
-          <Button className={classes.favoritesButton} onClick={handleSearch}>
-            Search
+          <Button className={classes.searchButton} variant="contained" color="primary" onClick={handleSearch}>
+            {searchLoading ? "Searching..." : "Search"}
           </Button>
           <Button className={classes.favoritesButton} onClick={handleAddToFavorites}>
             Add to Favorites
