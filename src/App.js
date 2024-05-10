@@ -15,18 +15,35 @@ function App() {
   const [childClicked, setChildClicked] = useState(null);
   const [isViewingFavorites, setIsViewingFavorites] = useState(false);
   const [favoritesList, setFavoritesList] = useState([]);
-  const [searchedCoords, setSearchedCoords] = useState(null); // Добавляем состояние для новых координат
+  const [searchedCoords, setSearchedCoords] = useState(null); 
 
   useEffect(() => {
-    const savedFavorites = localStorage.getItem("Favorites");
+    const savedFavorites = sessionStorage.getItem("Favorites");
     if (savedFavorites) {
       setFavoritesList(JSON.parse(savedFavorites));
+      console.log("Favorites loaded from sessionStorage:", JSON.parse(savedFavorites));
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("Favorites", JSON.stringify(favoritesList));
-  }, [favoritesList]);
+  const handleAddToFavorites = (newPlace) => {
+    if (!favoritesList.some((place) => place.address === newPlace.address)) {
+      const updatedFavorites = [...favoritesList, newPlace];
+      setFavoritesList(updatedFavorites);
+      sessionStorage.setItem("Favorites", JSON.stringify(updatedFavorites));
+      console.log("Added to favorites:", newPlace);
+      console.log("Favorites after adding:", updatedFavorites);
+    }
+  };
+
+  const handleRemoveFromFavorites = (place) => {
+    const updatedFavorites = favoritesList.filter(
+      (fav) => fav.address !== place.address
+    );
+    setFavoritesList(updatedFavorites);
+    sessionStorage.setItem("Favorites", JSON.stringify(updatedFavorites));
+    console.log("Removed from favorites:", place);
+    console.log("Favorites after removing:", updatedFavorites);
+  };
 
   useEffect(() => {
     if (bounds) {
@@ -62,22 +79,9 @@ function App() {
     setCoords({ lat: latitude, lng: longitude });
   };
 
-  const handleAddToFavorites = (newPlace) => {
-    if (!favoritesList.some((place) => place.address === newPlace.address)) {
-      setFavoritesList((prevFavorites) => [...prevFavorites, newPlace]);
-    }
-  };
-
-  const handleRemoveFromFavorites = (place) => {
-    const updatedFavorites = favoritesList.filter(
-      (fav) => fav.address !== place.address
-    );
-    setFavoritesList(updatedFavorites);
-  };
-
   const handleSearchCoords = (newCoords) => {
-    setSearchedCoords(newCoords); // Устанавливаем новые координаты из поиска
-    setBounds(null); // Сбрасываем bounds для обновления мест
+    setSearchedCoords(newCoords);
+    setBounds(null);
   };
 
   return (
@@ -88,7 +92,7 @@ function App() {
        openFavorites={setIsViewingFavorites}
        AddNewFav={handleAddToFavorites}
        setSearchCoords={handleSearchCoords}
-       setSearchedCoords={setSearchedCoords} // Добавьте эту строку
+       setSearchedCoords={setSearchedCoords}
      />
       <Grid container style={{ width: "100%", height: "100%" }}>
         <Grid item xs={12} md={3}>
@@ -102,13 +106,13 @@ function App() {
         </Grid>
         <Grid item xs={12} md={isViewingFavorites ? 6 : 9}>
           <LLMap
-            key={searchedCoords?.lat} // Используем новые координаты для обновления ключа
+            key={searchedCoords?.lat} 
             coords={coords}
             places={places}
             setBounds={setBounds}
             setCoords={setCoords}
             setChildClicked={setChildClicked}
-            searchedCoords={searchedCoords} // Передаем новые координаты в LLMap
+            searchedCoords={searchedCoords}
           />
         </Grid>
         {isViewingFavorites && (

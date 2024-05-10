@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL = "https://travel-advisor.p.rapidapi.com";
-const API_KEY = "c729a94493msha9fbf19b553d62cp115169jsn3cb573612e35";
+const API_KEY = "c5cd3437a0msh789d68825c69df6p1f767ejsnfb9ec54f6bbd";
 
 export const getPlacesDetails = async (type, { lat: bl_latitude, lng: bl_longitude }, { lat: tr_latitude, lng: tr_longitude }) => {
   try {
