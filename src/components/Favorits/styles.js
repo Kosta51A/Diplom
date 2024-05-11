@@ -1,3 +1,4 @@
+//FavoritesList.js styles
 import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({

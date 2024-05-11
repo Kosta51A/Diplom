@@ -45,7 +45,7 @@ export default function ResultsList({
         </div>
       ) : (
         <div>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl}variant="outlined">
             <InputLabel id="rating">Rating:</InputLabel>
             <Select
               labelId="rating"
@@ -59,7 +59,7 @@ export default function ResultsList({
               <MenuItem value={5}>5 stars</MenuItem>
             </Select>
           </FormControl>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl}variant="outlined">
             <InputLabel id="sort-by-reviews">Sort by Reviews:</InputLabel>
             <Select
               labelId="sort-by-reviews"
@@ -72,7 +72,7 @@ export default function ResultsList({
               <MenuItem value="desc">Descending</MenuItem>
             </Select>
           </FormControl>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl}variant="outlined">
   <InputLabel id="price-level">Price Level:</InputLabel>
   <Select
     labelId="price-level"

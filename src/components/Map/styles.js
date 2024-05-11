@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core";
+
 const useStyles = makeStyles((theme) => ({
   popup: {
     maxWidth: 300,
@@ -15,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     "& .leaflet-popup-tip-container": {
       display: "none",
     },
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "90%", // Изменяем максимальную ширину для мобильных устройств
+    },
   },
   cardImage: {
     height: 100,
@@ -27,8 +31,12 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   mapContainer: {
-    height: "90vh",
+    height: "100%",
     width: "100%",
+    [theme.breakpoints.down("xs")]: {
+      height: "70vh", // Уменьшаем высоту контейнера для мобильных устройств
+    },
   },
 }));
+
 export default useStyles;

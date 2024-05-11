@@ -1,17 +1,23 @@
-// styles.js
+// PlaceCard.js styles
+// PlaceCard.js styles
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
     flexDirection: "column",
-    maxWidth: 400,
-    margin: theme.spacing(2),
-    borderRadius: 16,
+    maxWidth: "400px",
+    margin: "auto", // Центрируем карточку по горизонтали
+    borderRadius: "16px",
     overflow: "hidden",
+    [theme.breakpoints.up("sm")]: {
+      alignItems: "center", // Центрируем компонент на планшетах и выше
+    },
   },
   media: {
-    height: 240,
+    height: "240px",
+    width: "100%", // Устанавливаем ширину изображения на 100%
+    objectFit: "cover",
   },
   icon: {
     marginRight: theme.spacing(1),
@@ -44,5 +50,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
 }));
+
+
 
 export default useStyles;
