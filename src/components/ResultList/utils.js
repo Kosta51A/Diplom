@@ -14,3 +14,8 @@ export const filterByRating = (places, selectedRating) => {
     return 0;
   };
   
+  export const sortByPriceLevel = (a, b) => {
+    const priceLevelOrder = { "$": 1, "$$ - $$$": 2, "$$$$": 3 }; // Определяем порядок ценовых уровней
+    return priceLevelOrder[a.price_level] - priceLevelOrder[b.price_level];
+  };
+  
