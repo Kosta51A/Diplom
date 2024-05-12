@@ -59,6 +59,13 @@ export default function ResultsList({
     setOpen(false);
   };
 
+  const handleClearFilters = () => {
+    setSelectedRating('');
+    setSortByReviews('');
+    setSelectedPriceLevel('');
+    setSelectedCuisines([]);
+  };
+
   return (
     <div className={classes.container}>
       {isLoading ? (
@@ -130,6 +137,8 @@ export default function ResultsList({
               <MenuItem value="$$$$">Expensive</MenuItem>
             </Select>
           </FormControl>
+
+          <Button onClick={handleClearFilters} color="secondary">Clear Filters</Button>
 
           <Dialog open={open} onClose={handleDialogClose}>
             <DialogTitle>Choose Cuisines</DialogTitle>
