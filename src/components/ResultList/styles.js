@@ -2,14 +2,19 @@ import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   container: {
-    padding: 25,
+    padding: "5%",
+    width: "100%",
+    height: "60%",
   },
   formControl: {
     margin: 10,
-    minWidth: 180,
+    minWidth: 150,
+    maxWidth: 150,
     marginBottom: 30,
+    maxHeight: 150,
+    overflowY: "auto",
     [theme.breakpoints.down("xs")]: {
-      minWidth: "100%", // Изменяем минимальную ширину на мобильных устройствах
+      minWidth: "100%",
       marginBottom: "5%",
       margin: 5,
     },
@@ -18,15 +23,14 @@ export const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "600px",
     display: "flex",
-    justifyContent: "center",
+    justifyConteant: "center",
     alignItems: "center",
   },
   list: {
     height: "80vh",
     overflow: "auto",
     [theme.breakpoints.down("xs")]: {
-      height: "60vh", // Уменьшаем высоту списка на мобильных устройствах
+      height: "60vh",
     },
   },
-
 }));
