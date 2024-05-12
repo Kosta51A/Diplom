@@ -1,3 +1,4 @@
+// ResultList.js styles
 import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
@@ -23,14 +24,15 @@ export const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "600px",
     display: "flex",
-    justifyConteant: "center",
+    justifyContent: "center",
     alignItems: "center",
   },
   list: {
-    height: "80vh",
+    height: "65vh",
     overflow: "auto",
     [theme.breakpoints.down("xs")]: {
       height: "60vh",
     },
   },
 }));
+export default useStyles;

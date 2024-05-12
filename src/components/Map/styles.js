@@ -1,3 +1,4 @@
+//Map.js styles
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   mapContainer: {
-    height: "100%",
+    height: "calc(100vh - 64px)", // 64px - высота заголовка (если используется стандартный AppBar)
     width: "100%",
     [theme.breakpoints.down("xs")]: {
       height: "70vh", // Уменьшаем высоту контейнера для мобильных устройств
