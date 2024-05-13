@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   FormControl,
   InputLabel,
@@ -26,6 +26,7 @@ export default function ResultsList({
   isLoading,
   childClicked,
   places,
+  setFilteredMarkers
 }) {
   const [selectedRating, setSelectedRating] = useState('');
   const [sortByReviews, setSortByReviews] = useState('');
@@ -65,7 +66,43 @@ export default function ResultsList({
     setSelectedPriceLevel('');
     setSelectedCuisines([]);
   };
+  useEffect(() => {
+    const filteredPlaces = filterByRating(places, selectedRating)
+      .filter(
+        (place) =>
+          !selectedPriceLevel || place.price_level === selectedPriceLevel
+      )
+      .filter(
+        (place) =>
+          selectedCuisines.length === 0 ||
+          selectedCuisines.every((cuisine) =>
+            place.cuisine.some((c) => c.name === cuisine)
+          )
+      )
+      .sort((a, b) => sortByReviewCount(a, b, sortByReviews))
+      .sort(sortByPriceLevel);
 
+    setFilteredMarkers(filteredPlaces); // Передаем отфильтрованные места в LLMap
+
+    // Сбросим маркеры, если фильтры пустые
+    if (
+      selectedRating === "" &&
+      sortByReviews === "" &&
+      selectedPriceLevel === "" &&
+      selectedCuisines.length === 0
+    ) {
+      setFilteredMarkers(places);
+    }
+  }, [
+    selectedRating,
+    sortByReviews,
+    selectedPriceLevel,
+    selectedCuisines,
+    places,
+    setFilteredMarkers,
+  ]);
+
+  // остальной код без изменений
   return (
     <div className={classes.container}>
       {isLoading ? (

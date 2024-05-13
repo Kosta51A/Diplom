@@ -15,7 +15,8 @@ function App() {
   const [childClicked, setChildClicked] = useState(null);
   const [isViewingFavorites, setIsViewingFavorites] = useState(false);
   const [favoritesList, setFavoritesList] = useState([]);
-  const [searchedCoords, setSearchedCoords] = useState(null); 
+  const [searchedCoords, setSearchedCoords] = useState(null);
+  const [filteredMarkers, setFilteredMarkers] = useState([]); // Добавляем состояние для отфильтрованных маркеров
 
   useEffect(() => {
     const savedFavorites = sessionStorage.getItem("Favorites");
@@ -102,15 +103,15 @@ function App() {
             childClicked={childClicked}
             isLoading={isLoading}
             places={places}
+            setFilteredMarkers={setFilteredMarkers} // Передаем функцию для обновления маркеров
           />
         </Grid>
         <Grid item xs={12} md={isViewingFavorites ? 6 : 9}>
           <LLMap
-            key={searchedCoords?.lat} 
             coords={coords}
-            places={places}
-            setBounds={setBounds}
+            places={isViewingFavorites ? favoritesList : filteredMarkers} // Используем отфильтрованные маркеры
             setCoords={setCoords}
+            setBounds={setBounds}
             setChildClicked={setChildClicked}
             searchedCoords={searchedCoords}
           />
