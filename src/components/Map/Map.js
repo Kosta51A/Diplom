@@ -65,6 +65,7 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
                 closeButton={false}
                 minWidth={240}
                 maxWidth={240}
+                autoPan={false} 
               >
                 <Box className={classes.popupContent}>
                   <img

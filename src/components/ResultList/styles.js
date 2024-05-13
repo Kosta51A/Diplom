@@ -28,7 +28,7 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   list: {
-    height: "65vh",
+    height: "68vh",
     overflow: "auto",
     [theme.breakpoints.down("xs")]: {
       height: "60vh",
