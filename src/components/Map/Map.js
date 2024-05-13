@@ -49,6 +49,7 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
       ? null
       : places?.length > 0 &&
           places?.map((place, index) => (
+            place.latitude && place.longitude ? (
             <Marker
               key={index}
               position={[place.latitude, place.longitude]}
@@ -90,6 +91,7 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
                 </Box>
               </Popup>
             </Marker>
+            ):null
           ));
   }
 
