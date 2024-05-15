@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Typography, Paper } from "@material-ui/core";
+import { Typography, Paper, IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { useStyles } from "./styles";
 
 export default function FavoritesList({ Data, RemoveItem, setIsViewingFavorites }) {
@@ -10,30 +11,24 @@ export default function FavoritesList({ Data, RemoveItem, setIsViewingFavorites 
   const [ratings, setRatings] = useState({});
 
   const handleRatingChange = (index, newRating) => {
-    setRatings(prevRatings => ({
+    setRatings((prevRatings) => ({
       ...prevRatings,
-      [index]: newRating
+      [index]: newRating,
     }));
 
-    // Update sessionStorage with the new rating
     const updatedFavorites = Data.map((item, i) => ({
       ...item,
-      rating: i === index ? newRating : item.rating
+      rating: i === index ? newRating : item.rating,
     }));
     sessionStorage.setItem("Favorites", JSON.stringify(updatedFavorites));
   };
 
   return (
-    <Paper className={classes.container} elevation={3} style={{ backgroundColor: "transparent" }}>
+    <Paper className={classes.container} elevation={3}>
       <div className={classes.listHeader}>
-        <Typography
-          variant="button"
-          color="secondary"
-          className={classes.closeButton}
-          onClick={() => setIsViewingFavorites(false)}
-        >
-          <CloseIcon fontSize="small" /> Close
-        </Typography>
+        <IconButton className={classes.closeButton} onClick={() => setIsViewingFavorites(false)}>
+          <CloseIcon fontSize="small" />
+        </IconButton>
       </div>
       <div className={classes.list}>
         {Data.length !== 0 ? (
@@ -41,17 +36,16 @@ export default function FavoritesList({ Data, RemoveItem, setIsViewingFavorites 
             <Paper key={index} className={classes.favItem} elevation={12}>
               <div className={classes.place}>
                 <div className={classes.placeHeader}>
-                  <Typography variant="h6" className={classes.placeName}>{name}</Typography>
-                  <Typography
-                    variant="button"
-                    color="primary"
-                    onClick={() => RemoveItem(Data[index])}
-                    className={classes.removeButton}
-                  >
-                    Remove
+                  <Typography variant="h6" className={classes.placeName}>
+                    {name}
                   </Typography>
+                  <IconButton onClick={() => RemoveItem(Data[index])} className={classes.removeButton}>
+                    <DeleteIcon />
+                  </IconButton>
                 </div>
-                <Typography variant="body1" className={classes.placeAddress}>{address}</Typography>
+                <Typography variant="body1" className={classes.placeAddress}>
+                  {address}
+                </Typography>
               </div>
               <div className={classes.actions}>
                 <div className={classes.rating}>
@@ -69,7 +63,9 @@ export default function FavoritesList({ Data, RemoveItem, setIsViewingFavorites 
           ))
         ) : (
           <div className={classes.noFav}>
-            <Typography variant="h6" className={classes.noFavText}>No favorites yet</Typography>
+            <Typography variant="h6" className={classes.noFavText}>
+              No favorites yet
+            </Typography>
           </div>
         )}
       </div>
@@ -78,12 +74,7 @@ export default function FavoritesList({ Data, RemoveItem, setIsViewingFavorites 
 }
 
 const StarButton = ({ value, onClick, isActive }) => (
-  <Typography
-    variant="button"
-    color="primary"
-    onClick={onClick}
-    style={{ cursor: "pointer" }}
-  >
+  <Typography variant="button" color="primary" onClick={onClick} style={{ cursor: "pointer", color: isActive ? "gold" : "inherit" }}>
     {isActive ? <StarIcon /> : <StarBorderIcon />}
   </Typography>
 );
