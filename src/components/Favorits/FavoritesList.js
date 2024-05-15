@@ -24,7 +24,7 @@ export default function FavoritesList({ Data, RemoveItem, setIsViewingFavorites 
   };
 
   return (
-    <Paper className={classes.container} elevation={3}>
+    <Paper className={classes.container} elevation={3} style={{ backgroundColor: "transparent" }}>
       <div className={classes.listHeader}>
         <Typography
           variant="button"

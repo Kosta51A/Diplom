@@ -59,6 +59,12 @@ function App() {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(handleGeoLocation);
   }, []);
+// В App.js, блок useEffect, который следит за изменениями isViewingFavorites, будет удален
+
+useEffect(() => {
+  // Оставим только обновление маркеров на карте в соответствии с выбранным списком мест
+  setFilteredMarkers(places);
+}, [places]);
 
   const getPlaces = async () => {
     try {
@@ -99,37 +105,40 @@ function App() {
         setSearchedCoords={setSearchedCoords}
         setSelectedRating={setSelectedRating}
       />
-      <Grid container style={{ width: "100%", height: "100%" }}>
-        <Grid item xs={12} md={3}>
-          <ResultsList
-            type={type}
-            setType={setType}
-            childClicked={childClicked}
-            isLoading={isLoading}
-            places={places}
-            setFilteredMarkers={setFilteredMarkers}
-          />
-        </Grid>
-        <Grid item xs={12} md={isViewingFavorites ? 6 : 9}>
-          <LLMap
-            coords={coords}
-            places={isViewingFavorites ? favoritesList : filteredMarkers}
-            setCoords={setCoords}
-            setBounds={setBounds}
-            setChildClicked={setChildClicked}
-            searchedCoords={searchedCoords}
-          />
-        </Grid>
-          {isViewingFavorites && (
-            <Grid item xs={12} md={3}>
-              <FavoritesList
-                setIsViewingFavorites={setIsViewingFavorites}
-                Data={favoritesList}
-                RemoveItem={handleRemoveFromFavorites}
-              />
-            </Grid>
-        )}
-      </Grid>
+      <Grid container style={{ position: "relative", width: "100%", height: "100%" }}>
+  <Grid item xs={12} md={3} style={{ zIndex: 1 }}>
+    <ResultsList
+      type={type}
+      setType={setType}
+      childClicked={childClicked}
+      isLoading={isLoading}
+      places={places}
+      setFilteredMarkers={setFilteredMarkers}
+    />
+  </Grid>
+  <Grid item xs={12} md={9} style={{ position: "relative", zIndex: 0 }}>
+    <LLMap
+      coords={coords}
+      places={ filteredMarkers}
+      setCoords={setCoords}
+      setBounds={setBounds}
+      setChildClicked={setChildClicked}
+      searchedCoords={searchedCoords}
+      style={{ pointerEvents: "auto" }}
+    />
+  </Grid>
+  {isViewingFavorites && (
+    <Grid item xs={12} md={3} style={{ position: "absolute", top: 0, right: 0, zIndex: 2 }}>
+      <FavoritesList
+        setIsViewingFavorites={setIsViewingFavorites}
+        Data={favoritesList}
+        RemoveItem={handleRemoveFromFavorites}
+      />
+    </Grid>
+  )}
+</Grid>
+
+
     </div>
   );
 }

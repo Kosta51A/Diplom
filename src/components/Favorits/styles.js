@@ -5,6 +5,9 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     borderRadius: theme.spacing(2),
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    height: "auto", // Установка высоты на auto
+    display: "flex",
+    flexDirection: "column", // Расположение по вертикали
   },
   listHeader: {
     display: "flex",
@@ -17,8 +20,8 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   list: {
-    maxHeight: "60vh",
     overflowY: "auto",
+    flex: 1, // Растягиваем список на всю доступную высоту
   },
   removeButton: {
     cursor: "pointer",
