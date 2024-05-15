@@ -59,12 +59,6 @@ function App() {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(handleGeoLocation);
   }, []);
-// В App.js, блок useEffect, который следит за изменениями isViewingFavorites, будет удален
-
-useEffect(() => {
-  // Оставим только обновление маркеров на карте в соответствии с выбранным списком мест
-  setFilteredMarkers(places);
-}, [places]);
 
   const getPlaces = async () => {
     try {
@@ -124,7 +118,7 @@ useEffect(() => {
       setBounds={setBounds}
       setChildClicked={setChildClicked}
       searchedCoords={searchedCoords}
-      style={{ pointerEvents: "auto" }}
+      style={{ pointerEvents: isViewingFavorites ? "none" : "auto" }} // Установка pointer-events
     />
   </Grid>
   {isViewingFavorites && (
