@@ -1,3 +1,5 @@
+// App.js
+
 import React, { useEffect, useState } from "react";
 import { CssBaseline, Grid } from "@material-ui/core";
 import MainHeader from "./components/Header/Header";
@@ -16,7 +18,8 @@ function App() {
   const [isViewingFavorites, setIsViewingFavorites] = useState(false);
   const [favoritesList, setFavoritesList] = useState([]);
   const [searchedCoords, setSearchedCoords] = useState(null);
-  const [filteredMarkers, setFilteredMarkers] = useState([]); // Добавляем состояние для отфильтрованных маркеров
+  const [filteredMarkers, setFilteredMarkers] = useState([]);
+  const [selectedRating, setSelectedRating] = useState(0);
 
   useEffect(() => {
     const savedFavorites = sessionStorage.getItem("Favorites");
@@ -26,9 +29,9 @@ function App() {
     }
   }, []);
 
-  const handleAddToFavorites = (newPlace) => {
+  const handleAddToFavorites = (newPlace, rating) => { // Updated to pass rating
     if (!favoritesList.some((place) => place.address === newPlace.address)) {
-      const updatedFavorites = [...favoritesList, newPlace];
+      const updatedFavorites = [...favoritesList, { ...newPlace, rating }];
       setFavoritesList(updatedFavorites);
       sessionStorage.setItem("Favorites", JSON.stringify(updatedFavorites));
       console.log("Added to favorites:", newPlace);
@@ -88,13 +91,14 @@ function App() {
   return (
     <div>
       <CssBaseline />
-       <MainHeader
-       selected={childClicked}
-       openFavorites={setIsViewingFavorites}
-       AddNewFav={handleAddToFavorites}
-       setSearchCoords={handleSearchCoords}
-       setSearchedCoords={setSearchedCoords}
-     />
+      <MainHeader
+        selected={childClicked}
+        openFavorites={setIsViewingFavorites}
+        AddNewFav={handleAddToFavorites}
+        setSearchCoords={handleSearchCoords}
+        setSearchedCoords={setSearchedCoords}
+        setSelectedRating={setSelectedRating}
+      />
       <Grid container style={{ width: "100%", height: "100%" }}>
         <Grid item xs={12} md={3}>
           <ResultsList
@@ -103,27 +107,27 @@ function App() {
             childClicked={childClicked}
             isLoading={isLoading}
             places={places}
-            setFilteredMarkers={setFilteredMarkers} // Передаем функцию для обновления маркеров
+            setFilteredMarkers={setFilteredMarkers}
           />
         </Grid>
         <Grid item xs={12} md={isViewingFavorites ? 6 : 9}>
           <LLMap
             coords={coords}
-            places={isViewingFavorites ? favoritesList : filteredMarkers} // Используем отфильтрованные маркеры
+            places={isViewingFavorites ? favoritesList : filteredMarkers}
             setCoords={setCoords}
             setBounds={setBounds}
             setChildClicked={setChildClicked}
             searchedCoords={searchedCoords}
           />
         </Grid>
-        {isViewingFavorites && (
-          <Grid item xs={12} md={3}>
-            <FavoritesList
-              setIsViewingFavorites={setIsViewingFavorites}
-              Data={favoritesList}
-              RemoveItem={handleRemoveFromFavorites}
-            />
-          </Grid>
+          {isViewingFavorites && (
+            <Grid item xs={12} md={3}>
+              <FavoritesList
+                setIsViewingFavorites={setIsViewingFavorites}
+                Data={favoritesList}
+                RemoveItem={handleRemoveFromFavorites}
+              />
+            </Grid>
         )}
       </Grid>
     </div>
