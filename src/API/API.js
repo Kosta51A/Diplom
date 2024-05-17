@@ -11,7 +11,7 @@ export const getPlacesDetails = async (type, { lat: bl_latitude, lng: bl_longitu
         tr_latitude,
         bl_longitude,
         tr_longitude,
-        limit: 100,
+        limit: 30,
         open_now: 'false',
       },
       headers: {

@@ -36,55 +36,28 @@ export default function ResultsList({
   const classes = useStyles();
   const elRefs = useRef([]);
 
-  const handleRatingChange = (event) => {
-    setSelectedRating(event.target.value);
-  };
-
-  const handleSortByReviewsChange = (event) => {
-    setSortByReviews(event.target.value);
-  };
-
-  const handlePriceLevelChange = (event) => {
-    setSelectedPriceLevel(event.target.value);
-  };
-
-  const handleCuisineChange = (event) => {
-    setSelectedCuisines(event.target.value);
-  };
-
-  const handleDialogOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDialogClose = () => {
-    setOpen(false);
-  };
-
+  const handleRatingChange = (event) => setSelectedRating(event.target.value);
+  const handleSortByReviewsChange = (event) => setSortByReviews(event.target.value);
+  const handlePriceLevelChange = (event) => setSelectedPriceLevel(event.target.value);
+  const handleCuisineChange = (event) => setSelectedCuisines(event.target.value);
+  const handleDialogOpen = () => setOpen(true);
+  const handleDialogClose = () => setOpen(false);
   const handleClearFilters = () => {
     setSelectedRating('');
     setSortByReviews('');
     setSelectedPriceLevel('');
     setSelectedCuisines([]);
   };
+
   useEffect(() => {
     const filteredPlaces = filterByRating(places, selectedRating)
-      .filter(
-        (place) =>
-          !selectedPriceLevel || place.price_level === selectedPriceLevel
-      )
-      .filter(
-        (place) =>
-          selectedCuisines.length === 0 ||
-          selectedCuisines.every((cuisine) =>
-            place.cuisine.some((c) => c.name === cuisine)
-          )
-      )
+      .filter(place => !selectedPriceLevel || place.price_level === selectedPriceLevel)
+      .filter(place => selectedCuisines.length === 0 || selectedCuisines.every(cuisine => place.cuisine.some(c => c.name === cuisine)))
       .sort((a, b) => sortByReviewCount(a, b, sortByReviews))
       .sort(sortByPriceLevel);
 
-    setFilteredMarkers(filteredPlaces); // Передаем отфильтрованные места в LLMap
+    setFilteredMarkers(filteredPlaces);
 
-    // Сбросим маркеры, если фильтры пустые
     if (
       selectedRating === "" &&
       sortByReviews === "" &&
@@ -93,16 +66,8 @@ export default function ResultsList({
     ) {
       setFilteredMarkers(places);
     }
-  }, [
-    selectedRating,
-    sortByReviews,
-    selectedPriceLevel,
-    selectedCuisines,
-    places,
-    setFilteredMarkers,
-  ]);
+  }, [selectedRating, sortByReviews, selectedPriceLevel, selectedCuisines, places, setFilteredMarkers]);
 
-  // остальной код без изменений
   return (
     <div className={classes.container}>
       {isLoading ? (
