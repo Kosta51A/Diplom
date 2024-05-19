@@ -15,6 +15,7 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "flex-end",
     marginBottom: theme.spacing(2),
+    
   },
   closeButton: {
     cursor: "pointer",

@@ -58,7 +58,7 @@ const PlaceCard = ({ place, placeRef, selected }) => {
         {place.website && (
           <Typography variant="body2" color="textSecondary">
             <PublicIcon className={classes.icon} />
-            <Link href={place.website} target="_blank" rel="noopener noreferrer" className={classes.link}>
+            <Link href={place.web_url} target="_blank" rel="noopener noreferrer" className={classes.link}>
               Website
             </Link>
           </Typography>

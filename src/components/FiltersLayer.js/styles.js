@@ -6,6 +6,7 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: theme.spacing(2), // Increased border radius for the container
     boxShadow: theme.shadows[3],
+    backgroundColor: "#cccccc",
   },
   formControl: {
     margin: theme.spacing(1),

@@ -84,11 +84,11 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
           Where to eat?
         </Typography>
         <div className={classes.favoritesContainer}>
-          <IconButton onClick={handleAddToFavorites}>
-            <AddIcon style={{ color: "#fff" }} />
+          <IconButton onClick={handleAddToFavorites} className={classes.iconButton}>
+            <AddIcon />
           </IconButton>
-          <IconButton onClick={() => openFavorites(true)}>
-            <FavoriteIcon style={{ color: "red" }} />
+          <IconButton onClick={() => openFavorites(true)} className={classes.iconButton}>
+            <FavoriteIcon className={classes.favoriteIcon} />
           </IconButton>
         </div>
       </Toolbar>
@@ -110,7 +110,7 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
                   ...params.InputProps,
                   startAdornment: (
                     <>
-                      <SearchIcon style={{ color: "red", marginRight: "8px" }} />
+                      <SearchIcon style={{ color: "#d32f2f", marginRight: "8px" }} />
                       {params.InputProps.startAdornment}
                     </>
                   ),
@@ -123,7 +123,6 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
           <Button
             className={classes.searchButton}
             variant="contained"
-            color="primary"
             onClick={handleSearch}
           >
             search
