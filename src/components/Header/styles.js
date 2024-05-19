@@ -1,42 +1,56 @@
-// Header styles.js
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  headerLeft: {
-    display: "flex",
-    alignItems: "center",
+  appBar: {
+    backgroundColor: "#333",
+    paddingBottom: theme.spacing(2), // Уменьшаем отступ снизу
   },
-  
-  headerRight: {
+  toolbar: {
     display: "flex",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center", // Выравнивание по центру
-    [theme.breakpoints.up("sm")]: {
-      justifyContent: "flex-end", // Для более широких экранов
-    },
+    paddingBottom: theme.spacing(1), // Уменьшаем отступ снизу
   },
   title: {
-    marginRight: theme.spacing(2),
+    flexGrow: 1,
+    textAlign: "center",
+    color: "#fff", // Белый цвет текста
+  },
+  searchBox: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: theme.spacing(1), // Уменьшаем отступ сверху
+    width: "100%",
+  },
+  searchPaper: {
+    display: "flex",
+    alignItems: "center",
+    padding: theme.spacing(1),
+    borderRadius: 25, // Увеличиваем закругление
+    width: "80%", // Увеличиваем ширину
+    maxWidth: 800,
+    backgroundColor: "#404040", // Изменяем цвет фона на светлый серый
+    [theme.breakpoints.down("sm")]: {
+      width: "90%", // Уменьшаем ширину для мобильных устройств
+    },
   },
   searchField: {
-    width: "100%", // Ширина 100% для адаптивности
-    textAlign: "center", // Центрирование текста
-    [theme.breakpoints.up("sm")]: {
-      width: 500, // Ширина для более широких экранов
-      textAlign: "left", // Возвращаем левое выравнивание на более широких экранах
-    },
-    [theme.breakpoints.down("xs")]: { // Медиа-запрос для всех мобильных устройств
-      width: "calc(100% - 48px)", // Ширина поля ввода на мобильных устройствах (вычтем ширину иконки поиска и отступы)
-      margin: 0, // Убираем отступы
-      marginBottom: theme.spacing(1), // Добавляем небольшой отступ снизу
-      marginTop: theme.spacing(1), // Добавляем отступ сверху
-    },
+    flexGrow: 1,
+    marginRight: theme.spacing(2),
+    backgroundColor: "#404040", // Светлый серый цвет фона
   },
   searchButton: {
     textTransform: "none",
+    borderRadius: 25, // Увеличиваем закругление
+    backgroundColor: "#3f51b5", // Синий цвет кнопки
+    color: "#fff", // Белый цвет текста кнопки
   },
-  favoritesButton: {
-    marginLeft: theme.spacing(1),
+  favoritesContainer: {
+    display: "flex",
+    alignItems: "center",
+  },
+  favoritesText: {
+    marginRight: theme.spacing(1),
   },
 }));
 

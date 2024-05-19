@@ -1,5 +1,3 @@
-// App.js
-
 import React, { useEffect, useState } from "react";
 import { CssBaseline, Grid } from "@material-ui/core";
 import MainHeader from "./components/Header/Header";
@@ -7,6 +5,7 @@ import { getPlacesDetails } from "./API/API";
 import ResultsList from "./components/ResultList/ResultsList";
 import LLMap from "./components/Map/Map";
 import FavoritesList from "./components/Favorits/FavoritesList";
+import FiltersLayer from "./components/FiltersLayer.js/FiltersLayer";
 
 function App() {
   const [type, setType] = useState("restaurants");
@@ -19,7 +18,11 @@ function App() {
   const [favoritesList, setFavoritesList] = useState([]);
   const [searchedCoords, setSearchedCoords] = useState(null);
   const [filteredMarkers, setFilteredMarkers] = useState([]);
-  const [selectedRating, setSelectedRating] = useState(0);
+  const [selectedRating, setSelectedRating] = useState('');
+  const [sortByReviews, setSortByReviews] = useState('');
+  const [selectedPriceLevel, setSelectedPriceLevel] = useState('');
+  const [selectedCuisines, setSelectedCuisines] = useState([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const savedFavorites = sessionStorage.getItem("Favorites");
@@ -29,7 +32,7 @@ function App() {
     }
   }, []);
 
-  const handleAddToFavorites = (newPlace, rating) => { // Updated to pass rating
+  const handleAddToFavorites = (newPlace, rating) => {
     if (!favoritesList.some((place) => place.address === newPlace.address)) {
       const updatedFavorites = [...favoritesList, { ...newPlace, rating }];
       setFavoritesList(updatedFavorites);
@@ -67,10 +70,16 @@ function App() {
         bounds?._northEast,
         bounds?._southWest
       );
-      const filteredData = data.filter(
-        (place) => place.name && place.num_reviews > 0
-      );
-      setPlaces(filteredData);
+
+      if (Array.isArray(data)) {
+        const filteredData = data.filter(
+          (place) => place.name && place.num_reviews > 0
+        );
+        setPlaces(filteredData);
+      } else {
+        console.error("Error: Data is not in expected format", data);
+      }
+
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching places:", error);
@@ -99,40 +108,56 @@ function App() {
         setSearchedCoords={setSearchedCoords}
         setSelectedRating={setSelectedRating}
       />
-      <Grid container style={{ position: "relative", width: "100%", height: "100%" }}>
-  <Grid item xs={12} md={3} style={{ zIndex: 1 }}>
-    <ResultsList
-      type={type}
-      setType={setType}
-      childClicked={childClicked}
-      isLoading={isLoading}
-      places={places}
-      setFilteredMarkers={setFilteredMarkers}
-    />
-  </Grid>
-  <Grid item xs={12} md={9} style={{ position: "relative", zIndex: 0 }}>
-    <LLMap
-      coords={coords}
-      places={ filteredMarkers}
-      setCoords={setCoords}
-      setBounds={setBounds}
-      setChildClicked={setChildClicked}
-      searchedCoords={searchedCoords}
-      style={{ pointerEvents: isViewingFavorites ? "none" : "auto" }} // Установка pointer-events
-    />
-  </Grid>
-  {isViewingFavorites && (
-    <Grid item xs={12} md={3} style={{ position: "absolute", top: 0, right: 0, zIndex: 2 }}>
-      <FavoritesList
-        setIsViewingFavorites={setIsViewingFavorites}
-        Data={favoritesList}
-        RemoveItem={handleRemoveFromFavorites}
+      <FiltersLayer
+        places={places}
+        setFilteredMarkers={setFilteredMarkers}
+        selectedRating={selectedRating}
+        setSelectedRating={setSelectedRating}
+        sortByReviews={sortByReviews}
+        setSortByReviews={setSortByReviews}
+        selectedPriceLevel={selectedPriceLevel}
+        setSelectedPriceLevel={setSelectedPriceLevel}
+        selectedCuisines={selectedCuisines}
+        setSelectedCuisines={setSelectedCuisines}
+        open={open}
+        setOpen={setOpen}
       />
-    </Grid>
-  )}
-</Grid>
-
-
+      <Grid container style={{ position: "relative", width: "100%", height: "100%" }}>
+        <Grid item xs={12} md={3} style={{ zIndex: 1 }}>
+          <ResultsList
+            type={type}
+            setType={setType}
+            childClicked={childClicked}
+            isLoading={isLoading}
+            places={places}
+            setFilteredMarkers={setFilteredMarkers}
+            selectedRating={selectedRating}
+            sortByReviews={sortByReviews}
+            selectedPriceLevel={selectedPriceLevel}
+            selectedCuisines={selectedCuisines}
+          />
+        </Grid>
+        <Grid item xs={12} md={9} style={{ position: "relative", zIndex: 0 }}>
+          <LLMap
+            coords={coords}
+            places={filteredMarkers}
+            setCoords={setCoords}
+            setBounds={setBounds}
+            setChildClicked={setChildClicked}
+            searchedCoords={searchedCoords}
+            style={{ pointerEvents: isViewingFavorites ? "none" : "auto" }}
+          />
+        </Grid>
+        {isViewingFavorites && (
+          <Grid item xs={12} md={3} style={{ position: "absolute", top: 0, right: 0, zIndex: 2 }}>
+            <FavoritesList
+              setIsViewingFavorites={setIsViewingFavorites}
+              Data={favoritesList}
+              RemoveItem={handleRemoveFromFavorites}
+            />
+          </Grid>
+        )}
+      </Grid>
     </div>
   );
 }

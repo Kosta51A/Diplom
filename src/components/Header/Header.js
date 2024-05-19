@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, TextField } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, IconButton, TextField, Button, Paper, Box } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import SearchIcon from "@material-ui/icons/Search";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import useStyles from "./styles"; // Добавлен импорт стилей
+import AddIcon from "@material-ui/icons/Add";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import useStyles from "./styles";
 
 export default function MainHeader({ selected, openFavorites, AddNewFav, setSearchedCoords }) {
-  const classes = useStyles(); // Использование стилей
+  const classes = useStyles();
+  
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchLoading, setSearchLoading] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleAddToFavorites = () => {
     const { name, address } = selected;
     AddNewFav({ name, address });
-    handleMenuClose();
   };
 
   const handleSearchChange = async (event, value) => {
@@ -86,19 +78,22 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
   }, []);
 
   return (
-    <AppBar position="static">
-      <Toolbar style={{ justifyContent: "space-between" }}>
-        <div className={classes.headerLeft}>
-          <Typography variant="h6" className={classes.title}>
-            Diplom work
-          </Typography>
-          {selected && (
-            <Typography variant="h6" className={classes.title}>
-              Selected place: {selected?.name}
-            </Typography>
-          )}
+    <AppBar position="static" className={classes.appBar}>
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h4" className={classes.title}>
+          Where to eat?
+        </Typography>
+        <div className={classes.favoritesContainer}>
+          <IconButton onClick={handleAddToFavorites}>
+            <AddIcon style={{ color: "#fff" }} />
+          </IconButton>
+          <IconButton onClick={() => openFavorites(true)}>
+            <FavoriteIcon style={{ color: "red" }} />
+          </IconButton>
         </div>
-        <div className={classes.headerRight}>
+      </Toolbar>
+      <Box className={classes.searchBox}>
+        <Paper elevation={3} className={classes.searchPaper}>
           <Autocomplete
             className={classes.searchField}
             options={options}
@@ -108,52 +103,33 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder="Search for a location"
+                placeholder="city, name, address"
                 variant="outlined"
                 size="small"
                 InputProps={{
                   ...params.InputProps,
                   startAdornment: (
                     <>
-                      <SearchIcon style={{ color: "#9e9e9e", marginRight: "8px" }} />
+                      <SearchIcon style={{ color: "red", marginRight: "8px" }} />
                       {params.InputProps.startAdornment}
                     </>
                   ),
-                  style: { backgroundColor: "#f5f5f5", width: "100%" } // Устанавливаем цвет фона и относительную ширину поля ввода
+                  style: { borderRadius: 25, backgroundColor: "#cccccc" },
                 }}
                 onKeyPress={handleKeyPress}
               />
-            )} 
+            )}
           />
-          <IconButton
+          <Button
             className={classes.searchButton}
             variant="contained"
             color="primary"
             onClick={handleSearch}
           >
-            <SearchIcon style={{ color: "#fff" }} />
-          </IconButton>
-          <IconButton
-            aria-label="menu"
-            aria-controls="header-menu"
-            aria-haspopup="true"
-            onClick={handleMenuClick}
-            color="inherit"
-          >
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-            id="header-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem onClick={handleAddToFavorites}>Add to Favorites</MenuItem>
-            <MenuItem onClick={() => openFavorites(true)}>View Favorites</MenuItem>
-          </Menu>
-        </div>
-      </Toolbar>
+            search
+          </Button>
+        </Paper>
+      </Box>
     </AppBar>
   );
 }

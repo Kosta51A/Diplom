@@ -1,38 +1,22 @@
-// ResultList.js styles
 import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   container: {
-    padding: "5%",
+    padding: theme.spacing(2),
     width: "100%",
-    height: "60%",
-  },
-  formControl: {
-    margin: 10,
-    minWidth: 150,
-    maxWidth: 150,
-    marginBottom: 30,
-    maxHeight: 150,
-    overflowY: "auto",
-    [theme.breakpoints.down("xs")]: {
-      minWidth: "100%",
-      marginBottom: "5%",
-      margin: 5,
-    },
+    height: "100%",
   },
   loading: {
-    width: "100%",
-    height: "600px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    height: "100%",
   },
   list: {
-    height: "68vh",
     overflow: "auto",
-    [theme.breakpoints.down("xs")]: {
-      height: "60vh",
+    maxHeight: "calc(100vh - 120px)", // Adjusted to accommodate header and footer
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: "calc(100vh - 160px)", // Adjusted for smaller screens
     },
   },
 }));
-export default useStyles;
