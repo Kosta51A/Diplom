@@ -1,5 +1,15 @@
-import React from "react";
-import { Card, CardMedia, CardContent, Typography, Box, Link, Divider } from "@material-ui/core";
+// PlaceCard.js
+import React, { useState } from "react";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Divider,
+} from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import PhoneIcon from "@material-ui/icons/Phone";
@@ -10,12 +20,51 @@ import useStyles from "./styles";
 
 const PlaceCard = ({ place, placeRef, selected }) => {
   const classes = useStyles();
+  const [user, setUser] = useState("");
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(0);
+  const [isReviewFormVisible, setIsReviewFormVisible] = useState(false);
 
   React.useEffect(() => {
     if (selected) {
       placeRef?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [selected, placeRef]);
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          placeId: place.location_id, // Используем place_id вместо location_id
+          placeName: place.name,
+          placeAddress: place.address,
+          user,
+          comment,
+          rating,
+        }),
+      });
+      if (response.ok) {
+        const review = await response.json();
+        console.log('Review submitted:', review);
+        setUser("");
+        setComment("");
+        setRating(0);
+        setIsReviewFormVisible(false);
+        alert('Review submitted successfully');
+      } else {
+        console.error('Failed to submit review');
+        alert('Failed to submit review');
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Error submitting review');
+    }
+  };
 
   return (
     <Card elevation={3} className={classes.card}>
@@ -35,7 +84,11 @@ const PlaceCard = ({ place, placeRef, selected }) => {
         <Divider className={classes.divider} />
         <Box display="flex" alignItems="center">
           <Rating name="read-only" value={Number(place.rating)} readOnly />
-          <Typography variant="body2" color="textSecondary" className={classes.reviewCount}>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            className={classes.reviewCount}
+          >
             {place.num_reviews} review{place.num_reviews > 1 ? "s" : ""}
           </Typography>
         </Box>
@@ -58,20 +111,64 @@ const PlaceCard = ({ place, placeRef, selected }) => {
         {place.website && (
           <Typography variant="body2" color="textSecondary">
             <PublicIcon className={classes.icon} />
-            <Link href={place.web_url} target="_blank" rel="noopener noreferrer" className={classes.link}>
+            <a
+              href={place.web_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.link}
+            >
               Website
-            </Link>
+            </a>
           </Typography>
         )}
       </CardContent>
       <Box className={classes.actions}>
-        <Link href={place.write_review} target="_blank" rel="noopener noreferrer" className={classes.reviewLink}>
-          <AddCommentRoundedIcon className={classes.reviewIcon} />
-          Leave a Review
-        </Link>
+        {isReviewFormVisible ? (
+          <form onSubmit={handleReviewSubmit} className={classes.reviewForm}>
+            <TextField
+              label="Name"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              fullWidth
+              required
+              margin="normal"
+            />
+            <TextField
+              label="Comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              fullWidth
+              required
+              margin="normal"
+            />
+            <Rating
+              name="rating"
+              value={rating}
+              onChange={(e, newValue) => setRating(newValue)}
+              required
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.submitButton}
+            >
+              Submit
+            </Button>
+          </form>
+        ) : (
+          <Button
+            startIcon={<AddCommentRoundedIcon />}
+            onClick={() => setIsReviewFormVisible(true)}
+            className={classes.reviewButton}
+          >
+            Leave a Review
+          </Button>
+        )}
       </Box>
     </Card>
   );
 };
 
 export default PlaceCard;
+
