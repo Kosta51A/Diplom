@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
   iconButton: {
     color: "#fff",
     marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(-10),
   },
   favoriteIcon: {
     color: "#E30B5D",
