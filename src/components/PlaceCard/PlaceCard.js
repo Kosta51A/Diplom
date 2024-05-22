@@ -40,7 +40,7 @@ const PlaceCard = ({ place, placeRef, selected }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          placeId: place.location_id, // Используем place_id вместо location_id
+          placeId: place.location_id, 
           placeName: place.name,
           placeAddress: place.address,
           user,

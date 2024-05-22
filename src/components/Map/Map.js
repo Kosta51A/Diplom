@@ -54,12 +54,7 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
               key={index}
               position={[place.latitude, place.longitude]}
               icon={Icon}
-              eventHandlers={{
-                click: (e) => {
-                  DomEvent.stopPropagation(e); // Остановка распространения события
-                  setChildClicked(place);
-                },
-              }}
+              onclick={() => setChildClicked(place)}
             >
               <Popup
                 className={classes.popup}
@@ -125,7 +120,7 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
       center={[coords?.lat || 53.68487875915163 , coords?.lng || 23.839491321653313]}
       zoom={zoom}
       zoomControl={true}
-      doubleClickZoom={true}
+      doubleClickZoom={false}
       scrollWheelZoom={false}
       dragging={true}
       zoomAnimation={true}
