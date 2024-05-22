@@ -22,7 +22,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   icon: {
     marginRight: theme.spacing(1),
-    color: theme.palette.primary.main,
   },
   loading: {
     display: "flex",
@@ -37,10 +36,29 @@ export const useStyles = makeStyles((theme) => ({
   clearButton: {
     margin: theme.spacing(2, 0),
     borderRadius: 20, // Rounded corners for the button
+    backgroundColor: "#E30B5D", // Raspberry color for the button
+    color: "#ffffff", // White text color
   },
   dialogContent: {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-between",
+  },
+  inputLabel: {
+    color: "#E30B5D", // Default color for input labels
+  },
+  menuPaper: {
+    borderRadius: 20, // Rounded edges for the dropdown list
+  },
+  select: {
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#E30B5D", // Default color for the select input border
+    },
+    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#E30B5D", // Default color for the select input border on hover
+    },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#E30B5D", // Default color for the select input border when focused
+    },
   },
 }));

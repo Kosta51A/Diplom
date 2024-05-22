@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   searchButton: {
     textTransform: "none",
     borderRadius: 25,
-    backgroundColor: "#d32f2f", // Малиновый цвет кнопки
+    backgroundColor: "#E30B5D", // Малиновый цвет кнопки
     color: "#fff",
   },
   favoritesContainer: {
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
   favoriteIcon: {
-    color: "#d32f2f",
+    color: "#E30B5D",
   },
 }));
 

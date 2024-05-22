@@ -110,7 +110,7 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
                   ...params.InputProps,
                   startAdornment: (
                     <>
-                      <SearchIcon style={{ color: "#d32f2f", marginRight: "8px" }} />
+                      <SearchIcon style={{ color: "#E30B5D", marginRight: "8px" }} />
                       {params.InputProps.startAdornment}
                     </>
                   ),

@@ -53,8 +53,8 @@ export default function FiltersLayer({
     <Paper elevation={3} className={classes.container}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
-          <InputLabel>
-            <RestaurantIcon className={classes.icon} />
+          <InputLabel className={classes.inputLabel} style={{ color: "#FFA500" }}>
+            <RestaurantIcon className={classes.icon} style={{ color: "#FFA500" }} />
             Cuisine:
           </InputLabel>
           <Select
@@ -63,13 +63,9 @@ export default function FiltersLayer({
             onChange={handleCuisineChange}
             renderValue={(selected) => selected.join(", ")}
             fullWidth
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  borderRadius: 20, // Rounded edges for the dropdown list
-                },
-              },
-            }}
+            MenuProps={{ classes: { paper: classes.menuPaper } }}
+            className={classes.select}
+            style={{ borderColor: "#FFA500" }}
           >
             {Array.from(
               new Set(
@@ -86,21 +82,17 @@ export default function FiltersLayer({
           </Select>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <InputLabel>
-            <StarIcon className={classes.icon} />
+          <InputLabel className={classes.inputLabel} style={{ color: "#e7ff00" }}>
+            <StarIcon className={classes.icon} style={{ color: "#e7ff00" }} />
             Rating:
           </InputLabel>
           <Select
             value={selectedRating || ""}
             onChange={handleRatingChange}
             fullWidth
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  borderRadius: 20, // Rounded edges for the dropdown list
-                },
-              },
-            }}
+            MenuProps={{ classes: { paper: classes.menuPaper } }}
+            className={classes.select}
+            style={{ borderColor: "#FFD700" }}
           >
             <MenuItem value="">All</MenuItem>
             <MenuItem value={3}>3 stars and above</MenuItem>
@@ -109,21 +101,17 @@ export default function FiltersLayer({
           </Select>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <InputLabel>
-            <SortIcon className={classes.icon} />
+          <InputLabel className={classes.inputLabel} style={{ color: "#0000FF" }}>
+            <SortIcon className={classes.icon} style={{ color: "#0000FF" }} />
             Sort by Reviews:
           </InputLabel>
           <Select
             value={sortByReviews || ""}
             onChange={handleSortByReviewsChange}
             fullWidth
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  borderRadius: 20, // Rounded edges for the dropdown list
-                },
-              },
-            }}
+            MenuProps={{ classes: { paper: classes.menuPaper } }}
+            className={classes.select}
+            style={{ borderColor: "#0000FF" }}
           >
             <MenuItem value="">None</MenuItem>
             <MenuItem value="asc">Ascending</MenuItem>
@@ -131,21 +119,17 @@ export default function FiltersLayer({
           </Select>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <InputLabel>
-            <AttachMoneyIcon className={classes.icon} />
+          <InputLabel className={classes.inputLabel} style={{ color: "#008000" }}>
+            <AttachMoneyIcon className={classes.icon} style={{ color: "#008000" }} />
             Price Level:
           </InputLabel>
           <Select
             value={selectedPriceLevel || ""}
             onChange={handlePriceLevelChange}
             fullWidth
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  borderRadius: 20, // Rounded edges for the dropdown list
-                },
-              },
-            }}
+            MenuProps={{ classes: { paper: classes.menuPaper } }}
+            className={classes.select}
+            style={{ borderColor: "#008000" }}
           >
             <MenuItem value="">All</MenuItem>
             <MenuItem value="$">Cheap</MenuItem>
@@ -161,7 +145,6 @@ export default function FiltersLayer({
           startIcon={<ClearAllIcon />}
           className={classes.clearButton}
           variant="contained"
-          style={{ borderRadius: 20 }} // Rounded corners for the button
         >
           Clear Filters
         </Button>
