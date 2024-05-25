@@ -2,63 +2,49 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
   container: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
     backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.spacing(2), // Increased border radius for the container
+    borderRadius: theme.spacing(2),
     boxShadow: theme.shadows[3],
+
     backgroundColor: "#cccccc",
   },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    maxWidth: 300,
+  inputLabel: {
     display: "flex",
     alignItems: "center",
-  },
-  formControlLabel: {
-    display: "flex",
-    alignItems: "center",
-    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
   icon: {
     marginRight: theme.spacing(1),
   },
-  loading: {
+  priceLevelContainer: {
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
+    justifyContent: "space-around",
   },
-  list: {
-    overflow: "auto",
-    maxHeight: "calc(100vh - 200px)",
+  select: {
+    width: "100%",
+    borderColor: "#FFA500",
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#FFA500",
+    },
+    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#FFA500",
+    },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#FFA500",
+    },
   },
   clearButton: {
     margin: theme.spacing(2, 0),
-    borderRadius: 20, // Rounded corners for the button
-    backgroundColor: "#E30B5D", // Raspberry color for the button
-    color: "#ffffff", // White text color
+    borderRadius: 20,
+    backgroundColor: "#E30B5D",
+    color: "#ffffff",
   },
-  dialogContent: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  inputLabel: {
-    color: "#E30B5D", // Default color for input labels
+  iconContainer: {
+    marginTop: theme.spacing(2),
   },
   menuPaper: {
-    borderRadius: 20, // Rounded edges for the dropdown list
-  },
-  select: {
-    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#E30B5D", // Default color for the select input border
-    },
-    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#E30B5D", // Default color for the select input border on hover
-    },
-    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#E30B5D", // Default color for the select input border when focused
-    },
+    borderRadius: 20,
   },
 }));
+

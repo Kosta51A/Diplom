@@ -15,10 +15,10 @@ export const sortByReviewCount = (a, b, sortByReviews) => {
   return 0;
 };
 
-export const sortByPriceLevel = (a, b) => {
-  const priceLevelOrder = { "$": 1, "$$ - $$$": 2, "$$$$": 3 };
-  return priceLevelOrder[a.price_level] - priceLevelOrder[b.price_level];
-};
+  export const sortByPriceLevel = (a, b) => {
+    const priceLevelOrder = { "$": 1, "$$ - $$$": 2, "$$$$": 3 };
+    return priceLevelOrder[a.price_level] - priceLevelOrder[b.price_level];
+  };
 
 export const sortByCuisine = (a, b) => {
   const cuisinesA = a.cuisine ? a.cuisine.map(c => c.name) : [];

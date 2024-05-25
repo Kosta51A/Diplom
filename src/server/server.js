@@ -1,9 +1,8 @@
-// server.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const axios = require('axios');
 
 const app = express();
 app.use(cors());
@@ -22,12 +21,21 @@ const reviewSchema = new mongoose.Schema({
   rating: Number,
   date: { type: Date, default: Date.now },
 });
-  
+
 const Review = mongoose.model('Review', reviewSchema);
-  
+
 app.post('/reviews', async (req, res) => {
   try {
-    const { placeId, placeName, placeAddress, user, comment, rating } = req.body;
+    const { placeId, placeName, placeAddress, user, comment, rating, captchaValue } = req.body;
+
+    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=6Lco1OcpAAAAAFXYZF6iRl4b4QQsqtxdZP8uRkfP&response=${captchaValue}`;
+    const response = await axios.post(verifyUrl);
+    const { success } = response.data;
+
+    if (!success) {
+      return res.status(400).json({ error: 'Captcha verification failed' });
+    }
+
     const review = new Review({ placeId, placeName, placeAddress, user, comment, rating });
     const savedReview = await review.save();
     res.status(201).json(savedReview);

@@ -1,5 +1,5 @@
-// PlaceCard.js
 import React, { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   Card,
   CardMedia,
@@ -24,6 +24,7 @@ const PlaceCard = ({ place, placeRef, selected }) => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const [isReviewFormVisible, setIsReviewFormVisible] = useState(false);
+  const [captchaValue, setCaptchaValue] = useState(null);
 
   React.useEffect(() => {
     if (selected) {
@@ -33,6 +34,11 @@ const PlaceCard = ({ place, placeRef, selected }) => {
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
+    if (!captchaValue) {
+      alert('Please complete the CAPTCHA');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/reviews', {
         method: 'POST',
@@ -46,6 +52,7 @@ const PlaceCard = ({ place, placeRef, selected }) => {
           user,
           comment,
           rating,
+          captchaValue,
         }),
       });
       if (response.ok) {
@@ -54,6 +61,7 @@ const PlaceCard = ({ place, placeRef, selected }) => {
         setUser("");
         setComment("");
         setRating(0);
+        setCaptchaValue(null);
         setIsReviewFormVisible(false);
         alert('Review submitted successfully');
       } else {
@@ -147,6 +155,10 @@ const PlaceCard = ({ place, placeRef, selected }) => {
               onChange={(e, newValue) => setRating(newValue)}
               required
             />
+            <ReCAPTCHA
+              sitekey="6Lco1OcpAAAAAIhNNxzDASEpegD4ZGtq8B7wWtf9"
+              onChange={setCaptchaValue}
+            />
             <Button
               type="submit"
               variant="contained"
@@ -171,4 +183,3 @@ const PlaceCard = ({ place, placeRef, selected }) => {
 };
 
 export default PlaceCard;
-

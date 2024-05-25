@@ -54,7 +54,13 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
               key={index}
               position={[place.latitude, place.longitude]}
               icon={Icon}
-              onclick={() => setChildClicked(place)}
+              eventHandlers={{
+                click: (e) => {
+                  DomEvent.stopPropagation(e); // Остановка распространения события
+                  setChildClicked(place);
+                },
+              }}
+            
             >
               <Popup
                 className={classes.popup}
