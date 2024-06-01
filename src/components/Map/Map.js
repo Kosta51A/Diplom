@@ -36,7 +36,7 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
   function DisplayMarkers() {
     const mMap = useMap();
     const map = useMapEvents({
-      moveend() {
+      moveend() { 
         setBounds(mMap.getBounds());
         setCoords(mMap.getCenter());
         const markers = allMarkers?.filter((m) => mMap?.getBounds().contains(m));
@@ -100,7 +100,7 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
     const southWest = new L.LatLng(36.824932, 10.194655),
       northEast = new L.LatLng(36.794009, 10.164443),
       bounds = new L.LatLngBounds(southWest, northEast);
-    const myMarkers = generateMarkers(25, bounds);
+    const myMarkers = generateMarkers(30, bounds);
     setallMarkers(myMarkers);
   }, []);
 
@@ -114,14 +114,14 @@ const LLMap = ({ coords, places, setBounds, setCoords, setChildClicked, searched
 
   useEffect(() => {
     if (searchedCoords) {
-      setCoords(searchedCoords); // Устанавливаем новые координаты в центр карты
-      setMapKey(prevKey => prevKey + 1); // Увеличиваем ключ для вызова перерисовки MapContainer
+      setCoords(searchedCoords); 
+      setMapKey(prevKey => prevKey + 1); 
     }
   }, [searchedCoords]);
 
   return (
     <MapContainer
-      key={mapKey} // Используем ключ для принудительного обновления MapContainer
+      key={mapKey} 
       className={classes.mapContainer}
       center={[coords?.lat || 53.68487875915163 , coords?.lng || 23.839491321653313]}
       zoom={zoom}
