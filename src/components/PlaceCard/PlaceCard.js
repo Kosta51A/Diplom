@@ -21,6 +21,7 @@ import useStyles from "./styles";
 const PlaceCard = ({ place, placeRef, selected }) => {
   const classes = useStyles();
   const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const [isReviewFormVisible, setIsReviewFormVisible] = useState(false);
@@ -46,10 +47,11 @@ const PlaceCard = ({ place, placeRef, selected }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          placeId: place.location_id, 
+          placeId: place.location_id,
           placeName: place.name,
           placeAddress: place.address,
           user,
+          email,
           comment,
           rating,
           captchaValue,
@@ -59,14 +61,16 @@ const PlaceCard = ({ place, placeRef, selected }) => {
         const review = await response.json();
         console.log('Review submitted:', review);
         setUser("");
+        setEmail("");
         setComment("");
         setRating(0);
         setCaptchaValue(null);
         setIsReviewFormVisible(false);
         alert('Review submitted successfully');
       } else {
-        console.error('Failed to submit review');
-        alert('Failed to submit review');
+        const { error } = await response.json();
+        console.error('Failed to submit review:', error);
+        alert(`Failed to submit review: ${error}`);
       }
     } catch (error) {
       console.error('Error submitting review:', error);
@@ -142,6 +146,15 @@ const PlaceCard = ({ place, placeRef, selected }) => {
               margin="normal"
             />
             <TextField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+              required
+              margin="normal"
+            />
+            <TextField
               label="Comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
@@ -158,6 +171,7 @@ const PlaceCard = ({ place, placeRef, selected }) => {
             <ReCAPTCHA
               sitekey="6Lco1OcpAAAAAIhNNxzDASEpegD4ZGtq8B7wWtf9"
               onChange={setCaptchaValue}
+              className={classes.captcha}
             />
             <Button
               type="submit"

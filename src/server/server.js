@@ -12,21 +12,23 @@ mongoose.connect('mongodb+srv://akosta02:GmQ6dDwPJw61cTwi@diplom.v5gpahf.mongodb
   .then(() => console.log('Database connected successfully'))
   .catch((err) => console.log('Database connection error:', err));
 
-const reviewSchema = new mongoose.Schema({
-  placeId: String,
-  placeName: String,
-  placeAddress: String,
-  user: String,
-  comment: String,
-  rating: Number,
-  date: { type: Date, default: Date.now },
-});
+  const reviewSchema = new mongoose.Schema({
+    placeId: String,
+    placeName: String,
+    placeAddress: String,
+    user: String,
+    email: String, // Add email field
+    comment: String,
+    rating: Number,
+    date: { type: Date, default: Date.now },
+  });
+  
 
 const Review = mongoose.model('Review', reviewSchema);
 
 app.post('/reviews', async (req, res) => {
   try {
-    const { placeId, placeName, placeAddress, user, comment, rating, captchaValue } = req.body;
+    const { placeId, placeName, placeAddress, user, email, comment, rating, captchaValue } = req.body;
 
     const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=6Lco1OcpAAAAAFXYZF6iRl4b4QQsqtxdZP8uRkfP&response=${captchaValue}`;
     const response = await axios.post(verifyUrl);
@@ -36,22 +38,18 @@ app.post('/reviews', async (req, res) => {
       return res.status(400).json({ error: 'Captcha verification failed' });
     }
 
-    const review = new Review({ placeId, placeName, placeAddress, user, comment, rating });
+    // Check if a review from the same email already exists for the place
+    const existingReview = await Review.findOne({ placeId, email });
+    if (existingReview) {
+      return res.status(400).json({ error: 'You have already submitted a review for this place' });
+    }
+
+    const review = new Review({ placeId, placeName, placeAddress, user, email, comment, rating });
     const savedReview = await review.save();
     res.status(201).json(savedReview);
   } catch (err) {
     console.error('Failed to save review:', err);
     res.status(500).json({ error: 'Failed to save review' });
-  }
-});
-
-app.get('/reviews/:placeId', async (req, res) => {
-  try {
-    const { placeId } = req.params;
-    const reviews = await Review.find({ placeId });
-    res.json(reviews);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch reviews' });
   }
 });
 
