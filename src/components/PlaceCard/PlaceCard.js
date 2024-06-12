@@ -176,8 +176,9 @@ const PlaceCard = ({ place, placeRef, selected }) => {
             <Button
               type="submit"
               variant="contained"
-              color="primary"
+              color="secondary"
               className={classes.submitButton}
+              style={{ width: "100%" }}
             >
               Submit
             </Button>

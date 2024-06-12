@@ -133,21 +133,7 @@ export default function FiltersLayer({
           </div>
         </Grid>
       </Grid>
-      <Grid container justifyContent="center" spacing={2} className={classes.iconContainer}>
-        {[
-          { label: "Fast Food", icon: FastfoodIcon },
-          { label: "Bar", icon: LocalBarIcon },
-          { label: "Pizza", icon: LocalPizzaIcon },
-          { label: "Sushi", icon: SushiIcon },
-          { label: "Grill", icon: GrillIcon },
-        ].map(({ label, icon: Icon }) => (
-          <Grid item key={label}>
-            <IconButton onClick={() => setSelectedCuisines((prev) => prev.includes(label) ? prev : [...prev, label])}>
-              <Icon className={classes.icon} />
-            </IconButton>
-          </Grid>
-        ))}
-      </Grid>
+      
       <Grid container justifyContent="center" style={{ marginTop: '20px' }}>
         <Button
           onClick={handleClearFilters}

@@ -17,7 +17,7 @@ mongoose.connect('mongodb+srv://akosta02:GmQ6dDwPJw61cTwi@diplom.v5gpahf.mongodb
     placeName: String,
     placeAddress: String,
     user: String,
-    email: String, // Add email field
+    email: String, 
     comment: String,
     rating: Number,
     date: { type: Date, default: Date.now },
@@ -38,7 +38,6 @@ app.post('/reviews', async (req, res) => {
       return res.status(400).json({ error: 'Captcha verification failed' });
     }
 
-    // Check if a review from the same email already exists for the place
     const existingReview = await Review.findOne({ placeId, email });
     if (existingReview) {
       return res.status(400).json({ error: 'You have already submitted a review for this place' });

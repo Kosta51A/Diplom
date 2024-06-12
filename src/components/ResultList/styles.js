@@ -5,6 +5,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     width: "100%",
     height: "100%",
+    
   },
   loading: {
     display: "flex",
@@ -14,9 +15,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   list: {
     overflow: "auto",
-    maxHeight: "calc(100vh - 120px)", // Adjusted to accommodate header and footer
+    maxHeight: "calc(100vh - 120px)", 
     [theme.breakpoints.down("sm")]: {
-      maxHeight: "calc(100vh - 160px)", // Adjusted for smaller screens
+      maxHeight: "calc(100vh - 160px)", 
     },
   },
 }));

@@ -35,16 +35,10 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   clearButton: {
-    margin: theme.spacing(2, 0),
+    margin: theme.spacing(0, 0),
     borderRadius: 20,
     backgroundColor: "#E30B5D",
     color: "#ffffff",
-  },
-  iconContainer: {
-    marginTop: theme.spacing(2),
-  },
-  menuPaper: {
-    borderRadius: 20,
   },
 }));
 
