@@ -9,14 +9,21 @@ import {
   TextField,
   Button,
   Divider,
+  Snackbar,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
+import MuiAlert from "@material-ui/lab/Alert";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import PhoneIcon from "@material-ui/icons/Phone";
 import PublicIcon from "@material-ui/icons/Public";
 import RestaurantIcon from "@material-ui/icons/Restaurant";
-import AddCommentRoundedIcon from '@material-ui/icons/AddCommentRounded';
+import AddCommentRoundedIcon from "@material-ui/icons/AddCommentRounded";
 import useStyles from "./styles";
+
+// Компонент Alert для использования в Snackbar
+const Alert = (props) => {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+};
 
 const PlaceCard = ({ place, placeRef, selected }) => {
   const classes = useStyles();
@@ -27,6 +34,20 @@ const PlaceCard = ({ place, placeRef, selected }) => {
   const [isReviewFormVisible, setIsReviewFormVisible] = useState(false);
   const [captchaValue, setCaptchaValue] = useState(null);
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const showSnackbar = (message, severity) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+
   React.useEffect(() => {
     if (selected) {
       placeRef?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -36,15 +57,15 @@ const PlaceCard = ({ place, placeRef, selected }) => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!captchaValue) {
-      alert('Please complete the CAPTCHA');
+      showSnackbar("Please complete the CAPTCHA", "warning");
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:5000/reviews', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/reviews", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           placeId: place.location_id,
@@ -59,22 +80,22 @@ const PlaceCard = ({ place, placeRef, selected }) => {
       });
       if (response.ok) {
         const review = await response.json();
-        console.log('Review submitted:', review);
+        console.log("Review submitted:", review);
         setUser("");
         setEmail("");
         setComment("");
         setRating(0);
         setCaptchaValue(null);
         setIsReviewFormVisible(false);
-        alert('Review submitted successfully');
+        showSnackbar("Review submitted successfully", "success");
       } else {
         const { error } = await response.json();
-        console.error('Failed to submit review:', error);
-        alert(`Failed to submit review: ${error}`);
+        console.error("Failed to submit review:", error);
+        showSnackbar(`Failed to submit review: ${error}`, "error");
       }
     } catch (error) {
-      console.error('Error submitting review:', error);
-      alert('Error submitting review');
+      console.error("Error submitting review:", error);
+      showSnackbar("Error submitting review", "error");
     }
   };
 
@@ -193,6 +214,16 @@ const PlaceCard = ({ place, placeRef, selected }) => {
           </Button>
         )}
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "center", horizontal: "center" }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };
