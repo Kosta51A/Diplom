@@ -20,7 +20,9 @@
     "react-scripts": "5.0.1"
   },
 "scripts": {
-  "start": "react-scripts start --port 3002",
+  "start": "concurrently \"npm run server\" \"npm run client\"",
+  "server": "node src/server/server.js",
+  "client": "react-scripts start",
   "build": "react-scripts build",
   "test": "react-scripts test",
   "eject": "react-scripts eject"
