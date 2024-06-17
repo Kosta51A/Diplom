@@ -1,63 +1,86 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
   container: {
-    padding: 25,
-  },
-  loading: {
-    width: "100%",
-    height: "600px",
+    padding: theme.spacing(3),
+    borderRadius: theme.spacing(2),
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    height: "auto",
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: "column",
+    backgroundColor: "transparent",
+    width: "fit-content", // Set initial width to fit content
   },
   listHeader: {
     display: "flex",
     justifyContent: "flex-end",
-    alignItems: "flex-end",
+    marginBottom: theme.spacing(2),
+    
+  },
+  closeButton: {
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    color: theme.palette.secondary.main,
+    "&:hover": {
+      color: theme.palette.secondary.dark,
+    },
+    padding: theme.spacing(1),
+    borderRadius: "50%",
+    backgroundColor: "#f5f5f5",
   },
   list: {
-    height: "75vh",
-    overflow: "auto",
+    overflowY: "auto",
+    flex: 1,
+  },
+  removeButton: {
+    cursor: "pointer",
+    color: theme.palette.error.main,
+    "&:hover": {
+      color: theme.palette.error.dark,
+    },
   },
   place: {
+    marginBottom: theme.spacing(1),
+  },
+  placeHeader: {
     display: "flex",
-    flexDirection: "column",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
+    marginBottom: theme.spacing(0.5),
   },
   placeName: {
-    fontSize: "1rem",
+    fontSize: "1.1rem",
     fontWeight: "bold",
   },
   placeAddress: {
-    fontSize: "0.75rem",
-    marginBottom: "1rem",
-  },
-  remove: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: "1rem",
+    fontSize: "0.9rem",
+    color: "#666",
   },
   favItem: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-    borderBottom: "1px solid #ccc",
+    padding: theme.spacing(2),
+    borderRadius: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   noFav: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    borderBottom: "1px solid #ccc",
+    textAlign: "center",
+    padding: theme.spacing(4), // Increase padding for better spacing
+    color: "#999",
+    backgroundColor: "#f9f9f9", // Add background color
+    borderRadius: theme.spacing(2), // Add border radius
+    width: "100%", // Set width to 100% when there are no favorites
   },
   noFavText: {
-    fontSize: "1rem",
+    fontSize: "1.2rem",
     fontWeight: "bold",
-    marginTop: "1rem",
+  },
+  actions: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  rating: {
+    display: "flex",
+    alignItems: "center",
   },
 }));

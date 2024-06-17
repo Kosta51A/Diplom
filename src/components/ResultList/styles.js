@@ -2,22 +2,22 @@ import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   container: {
-    padding: 25,
-  },
-  formControl: {
-    margin: 10,
-    minWidth: 120,
-    marginBottom: 30,
+    padding: theme.spacing(2),
+    width: "100%",
+    height: "100%",
+    
   },
   loading: {
-    width: "100%",
-    height: "600px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    height: "100%",
   },
   list: {
-    height: "75vh",
     overflow: "auto",
+    maxHeight: "calc(100vh - 120px)", 
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: "calc(100vh - 160px)", 
+    },
   },
 }));

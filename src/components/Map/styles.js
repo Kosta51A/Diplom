@@ -1,14 +1,42 @@
+//Map.js styles
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  mapContainer: {
-    height: "90vh",
-    width: "100%",
+  popup: {
+    maxWidth: 300,
+    backgroundColor: "#fff",
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: theme.shadows[3],
+    "& .leaflet-popup-content-wrapper": {
+      padding: theme.spacing(1),
+    },
+    "& .leaflet-popup-content": {
+      width: "100%",
+      textAlign: "left",
+    },
+    "& .leaflet-popup-tip-container": {
+      display: "none",
+    },
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "90%", // Изменяем максимальную ширину для мобильных устройств
+    },
   },
   cardImage: {
-    height: 85,
-    width: 85,
-    cursor: "pointer",
+    height: 100,
+    width: "100%",
+    objectFit: "cover",
+    borderRadius: theme.shape.borderRadius,
+    marginBottom: theme.spacing(1),
+  },
+  highlightedText: {
+    fontWeight: "bold",
+  },
+  mapContainer: {
+    height: "calc(100vh - 64px)", // 64px - высота заголовка (если используется стандартный AppBar)
+    width: "100%",
+    [theme.breakpoints.down("xs")]: {
+      height: "70vh", // Уменьшаем высоту контейнера для мобильных устройств
+    },
   },
 }));
 

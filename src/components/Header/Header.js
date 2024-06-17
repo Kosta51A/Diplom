@@ -1,30 +1,34 @@
-// Header.js
-import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, Button, TextField } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import React, { useState, useEffect } from "react";
+import { AppBar, Toolbar, Typography, IconButton, TextField, Button, Paper, Box } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import SearchIcon from "@material-ui/icons/Search";
+import AddIcon from "@material-ui/icons/Add";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import useStyles from "./styles";
 
-export default function MainHeader({ selected, openFavorites, AddNewFav, setSearchCoords,setCoords }) {
+export default function MainHeader({ selected, openFavorites, AddNewFav, setSearchedCoords }) {
   const classes = useStyles();
-  const [searchValue, setSearchValue] = useState("");
+  
+  const [options, setOptions] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   const handleAddToFavorites = () => {
     const { name, address } = selected;
     AddNewFav({ name, address });
   };
 
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
-  const handleSearch = async () => {
+  const handleSearchChange = async (event, value) => {
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${searchValue}&format=json&limit=1`);
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${value}&format=json&limit=5`);
       const data = await response.json();
-      if (data.length > 0) {
-        const { lat, lon } = data[0];
-        console.log("Found location:", lat, lon);
-        setSearchCoords({ lat, lng: lon }); // Устанавливаем новые координаты
+      if (data && data.length > 0) {
+        const formattedOptions = data.map((item) => ({
+          name: item.display_name,
+          lat: item.lat,
+          lon: item.lon
+        }));
+        setOptions(formattedOptions);
       } else {
         console.log("Location not found");
       }
@@ -32,42 +36,99 @@ export default function MainHeader({ selected, openFavorites, AddNewFav, setSear
       console.error("Error searching:", error);
     }
   };
-  
-  
+
+  const handleOptionSelect = (event, value) => {
+    if (value) {
+      setSelectedOption(value);
+    }
+  };
+
+  const handleSearch = () => {
+    if (selectedOption) {
+      setSearchLoading(true);
+      setSearchedCoords({ lat: parseFloat(selectedOption.lat), lng: parseFloat(selectedOption.lon) });
+      setSearchLoading(false);
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const getUserLocation = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setSearchedCoords({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  };
+
+  useEffect(() => {
+    getUserLocation();
+  }, []);
 
   return (
-    <AppBar position="static">
-      <Toolbar style={{ flex: 1, justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h6" className={classes.title}>
-            Diplom work
-          </Typography>
-          {selected && (
-            <Typography variant="h8" className={classes.title}>
-              Selected place: {selected?.name}
-            </Typography>
-          )}
-        </div>
-        <div>
-          <TextField
-            className={classes.searchField}
-            placeholder="Search for a location"
-            variant="outlined"
-            size="small"
-            value={searchValue}
-            onChange={handleSearchChange}
-          />
-          <Button className={classes.favoritesButton} onClick={handleSearch}>
-            Search
-          </Button>
-          <Button className={classes.favoritesButton} onClick={handleAddToFavorites}>
-            Add to Favorites
-          </Button>
-          <Button className={classes.favoritesButton} onClick={() => openFavorites(true)}>
-            View Favorites
-          </Button>
+    <AppBar position="static" className={classes.appBar}>
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h4" className={classes.title}>
+          Where to eat?
+        </Typography>
+        <div className={classes.favoritesContainer}>
+          <IconButton onClick={handleAddToFavorites} className={classes.iconButton}>
+            <AddIcon />
+          </IconButton>
+          <IconButton onClick={() => openFavorites(true)} className={classes.iconButton}>
+            <FavoriteIcon className={classes.favoriteIcon} />
+          </IconButton>
         </div>
       </Toolbar>
+      <Box className={classes.searchBox}>
+        <Paper elevation={3} className={classes.searchPaper}>
+          <Autocomplete
+            className={classes.searchField}
+            options={options}
+            getOptionLabel={(option) => option.name}
+            onChange={handleOptionSelect}
+            onInputChange={handleSearchChange}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="city, name, address"
+                variant="outlined"
+                size="small"
+                InputProps={{
+                  ...params.InputProps,
+                  startAdornment: (
+                    <>
+                      <SearchIcon style={{ color: "#E30B5D", marginRight: "8px" }} />
+                      {params.InputProps.startAdornment}
+                    </>
+                  ),
+                  style: { borderRadius: 25, backgroundColor: "#cccccc" },
+                }}
+                onKeyPress={handleKeyPress}
+              />
+            )}
+          />
+          <Button
+            className={classes.searchButton}
+            variant="contained"
+            onClick={handleSearch}
+          >
+            search
+          </Button>
+        </Paper>
+      </Box>
     </AppBar>
   );
 }
